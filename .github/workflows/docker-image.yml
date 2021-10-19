@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
 
@@ -26,6 +26,15 @@ jobs:
 ${{secrets.DOCKERHUB_USERNAME}}/TP2Devops:simple-api
 
       - name: Build image and push database
-# DO the same for database
-      #- name: Build image and push httpd
-# DO the same for httpd
+        uses: database/build-push-action@v2
+        with:
+          context: ./database
+          tags:
+${{secrets.DOCKERHUB_USERNAME}}/TP2Devops:database
+
+      - name: Build image and push httpd
+        uses: httpd/build-push-action@v2
+        with:
+          context: ./httpd
+          tags:
+${{secrets.DOCKERHUB_USERNAME}}/TP2Devops:httpd
